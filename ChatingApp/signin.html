@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChatRoom - Sign In</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    body {
+      background: linear-gradient(to bottom, #3ef18f, #482ce7, #d3e24d);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    .signin-box {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      text-align: center;
+      width: 350px;
+    }
+    h1 { color: #7157e6; margin-bottom: 20px; }
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      border: 2px solid #7157e6;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    button {
+      background: #7157e6;
+      color: white;
+      padding: 12px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover { background: #5a3fd1; }
+  </style>
+</head>
+<body>
+  <div class="signin-box">
+    <h1>ChatRoom</h1>
+    <p>Enter your name to join</p>
+    <input type="text" id="nameInput" placeholder="Your name" />
+    <button onclick="joinChat()">Join Chat</button>
+  </div>
+
+  <script>
+    function joinChat() {
+      let name = document.getElementById("nameInput").value.trim();
+      if (name) {
+        window.location.href = `index.html?name=${encodeURIComponent(name)}`;
+      } else {
+        alert("Please enter your name!");
+      }
+    }
+  </script>
+</body>
+</html>

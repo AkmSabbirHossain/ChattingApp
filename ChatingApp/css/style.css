@@ -1,0 +1,125 @@
+body {
+  margin: 0;
+  padding: auto;
+  font-family: Arial, sans-serif;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+   background: linear-gradient(to bottom, #3ef18f, #482ce7, #d3e24d); 
+}
+.chattapps{
+  margin-top:-2% ;
+  background-color: #7157e6;
+  width: 100%;
+  padding: 2% ;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 110px;
+  text-align: center;
+}
+.chat-box {
+  display: block;
+  margin: auto;
+  width: 90%;
+  max-width: 900px;
+  height: 615px;
+  border: 2px solid grey;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-image: url("../css/background.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 2%;
+  margin-top: -2.5%;
+}
+.container {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  height: 100%;
+}
+.chat-box:hover {
+  border: 2px solid #00f0ff;
+  box-shadow: 0 0 25px #00f0ff;
+}
+.message {
+  max-width: 350px;
+  padding: 10px;
+  margin: 10px;
+  border: 2px solid #32cd32;
+  border-radius: 10px;
+  background-color: #e0ffe0;
+  word-wrap: break-word;
+}
+.left {
+  align-self: flex-start;
+}
+.right {
+  align-self: flex-end;
+  border: 2px solid #00bfff;
+  background-color: #e0f2ff;
+}
+.system-message {
+  text-align: center;
+  color: #ff0000;
+  font-style: italic;
+  font-size: 14px;
+  margin: 10px auto;
+}
+.join-left-message {
+  text-align: center;
+  color: gray;
+  margin: 15px auto;
+  font-style: italic;
+  background-color: transparent;
+  max-width: 50%;
+}
+.input-area {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+#messageInput{
+   background-color: rgba(225, 229, 230, 0.849); 
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 6px; 
+  border-color: #f6d9f8;;
+}
+#messageInput:hover {
+  border: 2px solid #e7c7f0;
+  box-shadow: 0 0 15px #f6d9f8;
+}
+.icon-btn {
+  width: 40px;
+  height: 30px;
+  cursor: pointer;
+  margin-left: 4px;
+  transition: transform 0.2s ease;
+}
+.icon-btn:hover {
+  animation: wiggle 0.4s ease;
+}
+#sendBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  transition: transform 0.2s;
+  transition: transform 0.3s ease;
+  transform-style: preserve-3d;
+}
+#sendBtn:active {
+  animation: bounce 0.3s ease;
+}
+#sendBtn:hover {
+  transform: scale(1.2);
+}

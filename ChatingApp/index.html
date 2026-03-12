@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChatRoom</title>
+  <script defer src="http://localhost:4050/socket.io/socket.io.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/client.js"></script>
+</head>
+<body>
+  <div>
+    <header>
+      <h1 class="chattapps">Sabbir's ChatRoom</h1>
+    </header>
+  </div>
+
+  <div class="chat-box">
+    <div class="container"></div>
+    <form class="input-area" id="messageForm">
+      <input type="text" id="messageInput" placeholder="Type a message here..." />
+      <label for="fileInput">
+        <img src="File_Logo.jpg" alt="Upload" class="icon-btn">
+      </label>
+      <input type="file" id="fileInput" hidden />
+      <button type="submit" id="sendBtn">
+        <img src="send_button.png" alt="Send" class="icon-btn" />
+      </button>
+    </form>
+  </div>
+</body>
+</html>
