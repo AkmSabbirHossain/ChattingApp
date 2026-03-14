@@ -1,4 +1,4 @@
-const socket = io("http://localhost:4050");
+const socket = io();
 
 // ==================== signin  ====================
 const urlParams = new URLSearchParams(window.location.search);
