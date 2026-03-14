@@ -4,14 +4,14 @@ const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 
-app.use(express.static(__dirname));
+const users = {};
 
-// 🔥 এই লাইনটা যোগ করো — root এ signin দেখাবে
+// 🔥 এই route টা সবার আগে রাখো (static এর আগে)
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/signin.html');
 });
 
-const users = {};
+app.use(express.static(__dirname));
 
 io.on("connection", (socket) => {
   socket.on("new-user-joined", (names) => {
