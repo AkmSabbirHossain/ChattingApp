@@ -1,7 +1,5 @@
+const socket = io();
 
-const socket = io();   // ← localhost মুছে শুধু io() রাখা
-
-// ==================== নাম URL থেকে নেওয়া ====================
 const urlParams = new URLSearchParams(window.location.search);
 let names = urlParams.get("name");
 
@@ -9,21 +7,21 @@ if (!names) {
   window.location.href = "signin.html";
 }
 
-// ==================== DOM elements ====================
+//======== DOM elements ============
 const form = document.getElementById("messageForm");
 const messageInput = document.getElementById("messageInput");
 const messageContainer = document.querySelector(".container");
 const fileInput = document.getElementById("fileInput");
 const hiddenNameInput = document.getElementById("hiddenName");
 
-// hidden field-এ নাম সেভ করো (reload হলেও হারাবে না)
+// ============== hidden-name save ===========
 if (hiddenNameInput) {
   hiddenNameInput.value = names;
 }
 
 const audio = new Audio("apple_pay.mp3");
 
-// ==================== মেসেজ দেখানোর ফাংশন ====================
+// Message shown
 const append = (message, position, isSystem = false, timestamp = "") => {
   const messageElement = document.createElement("div");
   if (isSystem) {
@@ -44,25 +42,23 @@ const append = (message, position, isSystem = false, timestamp = "") => {
     timeSpan.style.color = "#888";
     messageElement.appendChild(timeSpan);
   }
-
   messageContainer.appendChild(messageElement);
   messageContainer.scrollTop = messageContainer.scrollHeight;
 
   if (position === "left" && !isSystem) {
-    audio.play().catch(err => console.log("Audio play error:", err));
+    audio.play().catch(err => console.log("Audio error:", err));
   }
 };
 
-// ==================== Join করার সময় emit ====================
+//============ Join emit ===============
 socket.emit("new-user-joined", names);
 
-// ==================== Socket events ====================
+// ================= Socket events ====================
 socket.on("user-joined", (names) => {
   append(`${names} joined the chat`, "null", true);
 });
 
 socket.on("receive", (data) => {
-  console.log("Received:", data); // debug
   append(`${data.names}: ${data.message}`, "left", false, data.timestamp);
 });
 
@@ -70,14 +66,13 @@ socket.on("left", (names) => {
   append(`${names} left the chat`, "null", true);
 });
 
-// ==================== মেসেজ পাঠানো ====================
+// ================Send message ==================
 form.addEventListener("submit", (e) => {
-  e.preventDefault();        // page reload বন্ধ
-  e.stopPropagation();       // extra safe
+  e.preventDefault();
+  e.stopPropagation();
 
   const message = messageInput.value.trim();
   if (message) {
-    console.log("Sending message:", message, "from:", names); // debug দেখার জন্য
     const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     append(`You: ${message}`, "right", false, timestamp);
     socket.emit("send", message);
@@ -85,7 +80,7 @@ form.addEventListener("submit", (e) => {
   }
 });
 
-// ==================== File Handling ====================
+// ================ File handling =====================
 socket.on("file-receive", (data) => {
   if (data.fileType.startsWith("image/")) {
     appendImage(data.fileData, data.names, "left", data.timestamp);
@@ -117,18 +112,38 @@ fileInput.addEventListener("change", () => {
   }
 });
 
-// ==================== Image & File append ====================
+// ==========picture shown and download link ============
 const appendImage = (imageData, senderName, position, timestamp) => {
   const messageElement = document.createElement("div");
   messageElement.classList.add("message", position);
-  const imgLink = document.createElement("a");
-  imgLink.href = imageData;
-  imgLink.target = "_blank";
+
+  const imgContainer = document.createElement("div");
+  imgContainer.style.position = "relative";
+  imgContainer.style.display = "inline-block";
+
   const img = document.createElement("img");
   img.src = imageData;
   img.style.maxWidth = "200px";
-  imgLink.appendChild(img);
-  messageElement.appendChild(imgLink);
+  img.style.borderRadius = "8px";
+  imgContainer.appendChild(img);
+
+  //========== Download button ==========
+  const downloadBtn = document.createElement("a");
+  downloadBtn.href = imageData;
+  downloadBtn.download = `${senderName}_image.jpg`;
+  downloadBtn.style.position = "absolute";
+  downloadBtn.style.bottom = "10px";
+  downloadBtn.style.right = "10px";
+  downloadBtn.style.background = "rgba(0,0,0,0.7)";
+  downloadBtn.style.color = "white";
+  downloadBtn.style.padding = "6px 12px";
+  downloadBtn.style.borderRadius = "6px";
+  downloadBtn.style.fontSize = "13px";
+  downloadBtn.style.textDecoration = "none";
+  downloadBtn.innerHTML = "⬇️ Download";
+  imgContainer.appendChild(downloadBtn);
+
+  messageElement.appendChild(imgContainer);
 
   const nameSpan = document.createElement("span");
   nameSpan.innerText = `${senderName}`;
@@ -147,17 +162,28 @@ const appendImage = (imageData, senderName, position, timestamp) => {
     timeSpan.style.color = "#888";
     messageElement.appendChild(timeSpan);
   }
+
   messageContainer.appendChild(messageElement);
   messageContainer.scrollTop = messageContainer.scrollHeight;
 };
 
+// ==========File shown and download link ================
 const appendFileLink = (fileName, senderName, position, fileData, timestamp) => {
   const messageElement = document.createElement("div");
   messageElement.classList.add("message", position);
+
   const link = document.createElement("a");
   link.href = fileData;
   link.download = fileName;
-  link.textContent = fileName;
+  link.style.display = "inline-flex";
+  link.style.alignItems = "center";
+  link.style.gap = "8px";
+  link.style.color = position === "right" ? "#0066ff" : "#333";
+  link.style.fontWeight = "bold";
+  link.style.textDecoration = "none";
+
+  link.innerHTML = `⬇️ ${fileName} (Click to Download)`;
+
   messageElement.appendChild(link);
 
   const nameSpan = document.createElement("span");
@@ -177,11 +203,12 @@ const appendFileLink = (fileName, senderName, position, fileData, timestamp) => 
     timeSpan.style.color = "#888";
     messageElement.appendChild(timeSpan);
   }
+
   messageContainer.appendChild(messageElement);
   messageContainer.scrollTop = messageContainer.scrollHeight;
 };
 
-// ==================== Debug ====================
+//=== Debug =========
 socket.on("connect", () => {
   console.log("Socket connected successfully!");
 });
