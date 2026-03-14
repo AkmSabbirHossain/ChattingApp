@@ -6,7 +6,7 @@ const io = require("socket.io")(http);
 
 const users = {};
 
-// 🔥 এই route টা সবার আগে রাখো (static এর আগে)
+// 🔥 এই route সবার আগে রাখো (static এর আগে)
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/signin.html');
 });
