@@ -1,17 +1,21 @@
 const PORT = process.env.PORT || 4050;
 const express = require("express");
+const path = require("path");  // <-- Add this
 const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 
-app.use(express.static(__dirname));
+// Serve static files
+app.use(express.static(path.join(__dirname))); // safer for all OS
 
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/signin.html');
+// Root route - signin.html load 
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "signin.html"));
 });
 
 const users = {};
 
+// Socket.IO code
 io.on("connection", (socket) => {
   socket.on("new-user-joined", (names) => {
     users[socket.id] = names;
@@ -43,6 +47,7 @@ io.on("connection", (socket) => {
   });
 });
 
+// Start server
 http.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
