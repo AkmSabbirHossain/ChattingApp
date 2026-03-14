@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ChatRoom</title>
-<script defer src="/socket.io/socket.io.js"></script>
+  <script defer src="/socket.io/socket.io.js"></script>
   <link rel="stylesheet" href="css/style.css" />
   <script defer src="js/client.js"></script>
 </head>
@@ -18,7 +18,9 @@
   <div class="chat-box">
     <div class="container"></div>
     <form class="input-area" id="messageForm">
-      <input type="text" id="messageInput" placeholder="Type a message here..." />
+      <!-- Hidden field যোগ করা হলো যাতে ?name=... হারায় না -->
+      <input type="hidden" name="name" id="hiddenName" value="">
+      <input type="text" id="messageInput" placeholder="Type a message here..." autocomplete="off" />
       <label for="fileInput">
         <img src="File_Logo.jpg" alt="Upload" class="icon-btn">
       </label>
@@ -29,4 +31,4 @@
     </form>
   </div>
 </body>
-</html>  
+</html>
