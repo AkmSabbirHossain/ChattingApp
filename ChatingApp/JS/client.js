@@ -1,20 +1,20 @@
-const socket = io();  // <-- connect to current host automatically
+const socket = io("http://localhost:4050");
 
-// ==================== signin check ====================
+// ==================== signin  ====================
 const urlParams = new URLSearchParams(window.location.search);
 let names = urlParams.get("name");
 
 if (!names) {
-  window.location.href = "/signin.html";  
+  window.location.href = "signin.html";  
 }
 
 const form = document.getElementById("messageForm");
 const messageInput = document.getElementById("messageInput");
 const messageContainer = document.querySelector(".container");
 const fileInput = document.getElementById("fileInput");
+
 const audio = new Audio("apple_pay.mp3");
 
-// Append message
 const append = (message, position, isSystem = false, timestamp = "") => {
   const messageElement = document.createElement("div");
   if (isSystem) {
@@ -35,19 +35,25 @@ const append = (message, position, isSystem = false, timestamp = "") => {
     timeSpan.style.color = "#888";
     messageElement.appendChild(timeSpan);
   }
-
   messageContainer.append(messageElement);
   messageContainer.scrollTop = messageContainer.scrollHeight;
   if (position === "left" && !isSystem) audio.play();
 };
 
-// Notify new user
 socket.emit("new-user-joined", names);
-socket.on("user-joined", (names) => append(`${names} joined the chat`, "null", true));
-socket.on("receive", (data) => append(`${data.names}: ${data.message}`, "left", false, data.timestamp));
-socket.on("left", (names) => append(`${names} left the chat`, "null", true));
 
-// Sending messages
+socket.on("user-joined", (names) => {
+  append(`${names} joined the chat`, "null", true);
+});
+
+socket.on("receive", (data) => {
+  append(`${data.names}: ${data.message}`, "left", false, data.timestamp);
+});
+
+socket.on("left", (names) => {
+  append(`${names} left the chat`, "null", true);
+});
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const message = messageInput.value.trim();
@@ -72,7 +78,7 @@ fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
   if (file) {
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = function (event) {
       const fileData = event.target.result;
       const fileName = file.name;
       const fileType = file.type;
@@ -80,16 +86,17 @@ fileInput.addEventListener("change", () => {
 
       socket.emit("file-send", { fileData, fileName, fileType, timestamp });
 
-      if (fileType.startsWith("image/")) appendImage(fileData, "You", "right", timestamp);
-      else appendFileLink(fileName, "You", "right", fileData, timestamp);
-
+      if (fileType.startsWith("image/")) {
+        appendImage(fileData, "You", "right", timestamp);
+      } else {
+        appendFileLink(fileName, "You", "right", fileData, timestamp);
+      }
       fileInput.value = "";
     };
     reader.readAsDataURL(file);
   }
 });
 
-// Append image
 const appendImage = (imageData, senderName, position, timestamp) => {
   const messageElement = document.createElement("div");
   messageElement.classList.add("message", position);
@@ -103,7 +110,7 @@ const appendImage = (imageData, senderName, position, timestamp) => {
   messageElement.appendChild(imgLink);
 
   const nameSpan = document.createElement("span");
-  nameSpan.innerText = senderName;
+  nameSpan.innerText = `${senderName}`;
   nameSpan.style.display = "block";
   nameSpan.style.textAlign = position === "right" ? "right" : "left";
   nameSpan.style.fontSize = "12px";
@@ -123,7 +130,6 @@ const appendImage = (imageData, senderName, position, timestamp) => {
   messageContainer.scrollTop = messageContainer.scrollHeight;
 };
 
-// Append file link
 const appendFileLink = (fileName, senderName, position, fileData, timestamp) => {
   const messageElement = document.createElement("div");
   messageElement.classList.add("message", position);
@@ -134,7 +140,7 @@ const appendFileLink = (fileName, senderName, position, fileData, timestamp) => 
   messageElement.appendChild(link);
 
   const nameSpan = document.createElement("span");
-  nameSpan.innerText = senderName;
+  nameSpan.innerText = `${senderName}`;
   nameSpan.style.display = "block";
   nameSpan.style.textAlign = position === "right" ? "right" : "left";
   nameSpan.style.fontSize = "12px";
