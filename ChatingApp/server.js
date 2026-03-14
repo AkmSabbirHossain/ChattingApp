@@ -6,6 +6,11 @@ const io = require("socket.io")(http);
 
 app.use(express.static(__dirname));
 
+// 🔥 এই লাইনটা যোগ করো — root এ signin দেখাবে
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/signin.html');
+});
+
 const users = {};
 
 io.on("connection", (socket) => {
@@ -13,7 +18,6 @@ io.on("connection", (socket) => {
     users[socket.id] = names;
     socket.broadcast.emit("user-joined", names);
   });
-
   socket.on("file-send", (data) => {
     socket.broadcast.emit("file-receive", {
       fileData: data.fileData,
@@ -23,7 +27,6 @@ io.on("connection", (socket) => {
       timestamp: data.timestamp,
     });
   });
-
   socket.on("send", (message) => {
     const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     socket.broadcast.emit("receive", {
@@ -32,7 +35,6 @@ io.on("connection", (socket) => {
       timestamp: timestamp,
     });
   });
-
   socket.on("disconnect", () => {
     socket.broadcast.emit("left", users[socket.id]);
     delete users[socket.id];
@@ -40,5 +42,5 @@ io.on("connection", (socket) => {
 });
 
 http.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
