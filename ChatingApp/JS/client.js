@@ -1,14 +1,14 @@
-// ==================== Render.com / Production এর জন্য ====================
-const socket = io();   // ← কোনো URL দিবে না! এটাই সঠিক (auto detect করে)
+// ==================== Render.com / Production Ready ====================
+const socket = io();   // ← এই লাইনটা পরিবর্তন করো! localhost মুছে শুধু io() রাখো
 
+// ==================== signin handling ====================
 const urlParams = new URLSearchParams(window.location.search);
 let names = urlParams.get("name");
 
 if (!names) {
-  window.location.href = "signin.html";
+  window.location.href = "signin.html";  
 }
 
-// ==================== DOM elements ====================
 const form = document.getElementById("messageForm");
 const messageInput = document.getElementById("messageInput");
 const messageContainer = document.querySelector(".container");
@@ -16,16 +16,13 @@ const fileInput = document.getElementById("fileInput");
 
 const audio = new Audio("apple_pay.mp3");
 
-// ==================== Message append function ====================
 const append = (message, position, isSystem = false, timestamp = "") => {
   const messageElement = document.createElement("div");
-  
   if (isSystem) {
     messageElement.classList.add("system-message");
   } else {
     messageElement.classList.add("message", position);
   }
-
   const messageContent = document.createElement("div");
   messageContent.innerText = message;
   messageElement.appendChild(messageContent);
@@ -39,25 +36,18 @@ const append = (message, position, isSystem = false, timestamp = "") => {
     timeSpan.style.color = "#888";
     messageElement.appendChild(timeSpan);
   }
-
-  messageContainer.appendChild(messageElement);
+  messageContainer.append(messageElement);
   messageContainer.scrollTop = messageContainer.scrollHeight;
-
-  if (position === "left" && !isSystem) {
-    audio.play().catch(err => console.log("Audio play failed:", err));
-  }
+  if (position === "left" && !isSystem) audio.play();
 };
 
-// ==================== Join করার সময় emit ====================
 socket.emit("new-user-joined", names);
 
-// ==================== Socket events ====================
 socket.on("user-joined", (names) => {
   append(`${names} joined the chat`, "null", true);
 });
 
 socket.on("receive", (data) => {
-  console.log("Message received:", data); // debug
   append(`${data.names}: ${data.message}`, "left", false, data.timestamp);
 });
 
@@ -65,13 +55,10 @@ socket.on("left", (names) => {
   append(`${names} left the chat`, "null", true);
 });
 
-// ==================== Send message ====================
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const message = messageInput.value.trim();
-  
   if (message) {
-    console.log("Sending message:", message); // debug
     const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     append(`You: ${message}`, "right", false, timestamp);
     socket.emit("send", message);
@@ -79,7 +66,7 @@ form.addEventListener("submit", (e) => {
   }
 });
 
-// ==================== File upload handling ====================
+// File Handling
 socket.on("file-receive", (data) => {
   if (data.fileType.startsWith("image/")) {
     appendImage(data.fileData, data.names, "left", data.timestamp);
@@ -111,11 +98,9 @@ fileInput.addEventListener("change", () => {
   }
 });
 
-// ==================== Image & File append functions ====================
 const appendImage = (imageData, senderName, position, timestamp) => {
   const messageElement = document.createElement("div");
   messageElement.classList.add("message", position);
-
   const imgLink = document.createElement("a");
   imgLink.href = imageData;
   imgLink.target = "_blank";
@@ -142,15 +127,13 @@ const appendImage = (imageData, senderName, position, timestamp) => {
     timeSpan.style.color = "#888";
     messageElement.appendChild(timeSpan);
   }
-
-  messageContainer.appendChild(messageElement);
+  messageContainer.append(messageElement);
   messageContainer.scrollTop = messageContainer.scrollHeight;
 };
 
 const appendFileLink = (fileName, senderName, position, fileData, timestamp) => {
   const messageElement = document.createElement("div");
   messageElement.classList.add("message", position);
-
   const link = document.createElement("a");
   link.href = fileData;
   link.download = fileName;
@@ -174,16 +157,6 @@ const appendFileLink = (fileName, senderName, position, fileData, timestamp) => 
     timeSpan.style.color = "#888";
     messageElement.appendChild(timeSpan);
   }
-
-  messageContainer.appendChild(messageElement);
+  messageContainer.append(messageElement);
   messageContainer.scrollTop = messageContainer.scrollHeight;
 };
-
-// ==================== Connection status debug ====================
-socket.on("connect", () => {
-  console.log("Socket connected successfully!");
-});
-
-socket.on("connect_error", (err) => {
-  console.error("Socket connection error:", err.message);
-});
