@@ -1,13 +1,15 @@
-const socket = io("http://localhost:4050");
+// ==================== PRODUCTION READY (Render.com) ====================
+const socket = io();   // ← এটাই সবচেয়ে গুরুত্বপূর্ণ! localhost মুছে ফেলা হয়েছে
 
-// ==================== signin  ====================
+// ==================== Sign In থেকে নাম নেওয়া ====================
 const urlParams = new URLSearchParams(window.location.search);
 let names = urlParams.get("name");
 
 if (!names) {
-  window.location.href = "signin.html";  
+  window.location.href = "signin.html";   // নাম না থাকলে signin এ নিয়ে যাবে
 }
 
+// ==================== বাকি সব কোড (আগের মতোই) ====================
 const form = document.getElementById("messageForm");
 const messageInput = document.getElementById("messageInput");
 const messageContainer = document.querySelector(".container");
