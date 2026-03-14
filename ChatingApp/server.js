@@ -6,9 +6,14 @@ const io = require("socket.io")(http);
 
 app.use(express.static(__dirname));
 
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/signin.html");
+});
+
 const users = {};
 
 io.on("connection", (socket) => {
+
   socket.on("new-user-joined", (names) => {
     users[socket.id] = names;
     socket.broadcast.emit("user-joined", names);
@@ -26,6 +31,7 @@ io.on("connection", (socket) => {
 
   socket.on("send", (message) => {
     const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
     socket.broadcast.emit("receive", {
       message: message,
       names: users[socket.id],
@@ -37,8 +43,9 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("left", users[socket.id]);
     delete users[socket.id];
   });
+
 });
 
 http.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`Server running`);
 });
