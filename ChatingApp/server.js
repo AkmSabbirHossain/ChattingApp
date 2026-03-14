@@ -1,23 +1,18 @@
 const PORT = process.env.PORT || 4050;
 const express = require("express");
-const path = require("path"); // <-- path module added
 const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 
-// Serve static files (css, js, images)
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(__dirname));
 
-// Root route to load signin.html first
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "signin.html"));
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/signin.html');
 });
 
 const users = {};
 
-// ================== Socket.IO ==================
 io.on("connection", (socket) => {
-
   socket.on("new-user-joined", (names) => {
     users[socket.id] = names;
     socket.broadcast.emit("user-joined", names);
@@ -46,10 +41,8 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("left", users[socket.id]);
     delete users[socket.id];
   });
-
 });
 
-// Start server
 http.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
