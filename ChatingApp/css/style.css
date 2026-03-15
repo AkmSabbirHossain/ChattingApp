@@ -53,7 +53,7 @@ header {
 .message {
   max-width: 350px;
   padding: 10px;
-  margin: 10px;
+  margin: 2px;
   border: 2px solid #32cd32;
   border-radius: 10px;
   background-color: #e0ffe0;
@@ -82,19 +82,25 @@ header {
   background-color: transparent;
   max-width: 50%;
 }
+/* Input area */
 .input-area {
+  background: #f0f0f0;
+  padding: 8px 12px;
   display: flex;
   align-items: center;
-  padding: 10px;
+  gap: 8px;
+  border-top: 1px solid #ddd;
 }
-#messageInput{
-   background-color: rgba(225, 229, 230, 0.849); 
+#messageInput {
   flex: 1;
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 6px; 
-  border-color: #f6d9f8;;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 15px;
+  outline: none;
+  background: white;
 }
+
 #messageInput:hover {
   border: 2px solid #e7c7f0;
   box-shadow: 0 0 15px #f6d9f8;
@@ -122,4 +128,158 @@ header {
 }
 #sendBtn:hover {
   transform: scale(1.2);
+}
+
+
+/* emoji button */
+.emoji-button {
+  width: 42px;
+  height: 42px;
+  background: #d6a8a8;
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+  transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.emoji-button:hover {
+  background: #e0e0e0;
+  transform: scale(1.1);
+}
+
+.emoji-button:active {
+  background: #d0d0d0;
+  transform: scale(0.95);
+}
+
+/* ==================== Clear Chat Button ==================== */
+.clear-chat-btn {
+  position: fixed;
+  bottom: 90px;                 
+  right: 20px;
+  z-index: 100;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #ff6b6b, #ee5253);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* For mobile*/
+@media (max-width: 600px) {
+  .clear-chat-btn {
+    bottom: 80px;              
+    right: 50%;
+    transform: translateX(50%);  
+    padding: 10px 20px;
+    font-size: 14px;
+    min-width: 140px;
+    text-align: center;
+    border-radius: 30px;          
+  }
+}
+
+/* Hover + Active */
+.clear-chat-btn:hover,
+.clear-chat-btn:active {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
+}
+/* ==================== Sign In Page  ==================== */
+.signin-page {
+  background: linear-gradient(to bottom, #3ef18f, #482ce7, #d3e24d);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.signin-page .signin-box {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  text-align: center;
+  width: 350px;
+}
+
+.signin-page h1 {
+  color: #7157e6;
+  margin-bottom: 20px;
+}
+
+.signin-page input {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  border: 2px solid #7157e6;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.signin-page button {
+  background: #7157e6;
+  color: white;
+  padding: 12px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.signin-page button:hover {
+  background: #5a3fd1;
+}
+
+
+
+/* ==================== Custom Menus ==================== */
+.custom-menu {
+  position: absolute;
+  display: none;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  z-index: 1000;
+  padding: 8px 0;
+  min-width: 180px;
+}
+
+.menu-item {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background: #f5f5f5;
+}
+
+.delete-menu .menu-item {
+  color: #e74c3c;
+}
+
+.image-menu #downloadOption {
+  color: #0066ff;
+}
+
+.image-menu #deleteImageOption {
+  color: #e74c3c;
 }
