@@ -486,14 +486,14 @@ socket.on("connect", () => console.log("Socket connected!"));
 socket.on("connect_error", (err) => console.error("Socket error:", err));
 
 // ==================== Chat Clear Button ====================
-const clearBtn = document.createElement("button");
-clearBtn.innerHTML = "🧹 Clear Chat";
-clearBtn.className = "clear-chat-btn";
-clearBtn.onclick = () => {
-  if (confirm("Are you sure? This will clear all chat history permanently.")) {
-    localStorage.removeItem(CHAT_KEY);
-    messageContainer.innerHTML = "";
-    append("Chat history cleared 🧹", "null", true);
-  }
-};
-document.body.appendChild(clearBtn);
+// const clearBtn = document.createElement("button");
+// clearBtn.innerHTML = "🧹 Clear Chat";
+// clearBtn.className = "clear-chat-btn";
+// clearBtn.onclick = () => {
+//   if (confirm("Are you sure? This will clear all chat history permanently.")) {
+//     localStorage.removeItem(CHAT_KEY);
+//     messageContainer.innerHTML = "";
+//     append("Chat history cleared 🧹", "null", true);
+//   }
+// };
+// document.body.appendChild(clearBtn);
