@@ -7,20 +7,39 @@
   <script defer src="/socket.io/socket.io.js"></script>
   <link rel="stylesheet" href="css/style.css" />
   <script defer src="JS/client.js"></script>
+
+  <!-- Emoji picker CDN -->
+  <link href="https://unpkg.com/emoji-mart@latest/css/emoji-mart.css" rel="stylesheet">
+  <script src="https://unpkg.com/emoji-mart@latest/dist/emoji-mart.js"></script>
 </head>
 <body>
   <div>
     <header>
-      <h1 class="chattapps">Sabbir ChatRoom</h1>
+      <h1 class="chattapps">ChatRoom</h1>
     </header>
   </div>
 
   <div class="chat-box">
     <div class="container"></div>
+
+    <!-- Custom Delete Menu -->
+    <div id="deleteMenu" class="custom-menu delete-menu">
+      <div onclick="deleteSelectedMessage()" class="menu-item">🗑️ Delete for Everyone</div>
+    </div>
+
+    <!-- Custom Image Menu (Download + Delete) -->
+    <div id="imageMenu" class="custom-menu image-menu">
+      <div id="downloadOption" class="menu-item">⬇️ Download Image</div>
+      <div id="deleteImageOption" class="menu-item">🗑️ Delete for Everyone</div>
+    </div>
+
     <form class="input-area" id="messageForm">
-      <!-- hidden field -->
       <input type="hidden" name="name" id="hiddenName" value="">
       <input type="text" id="messageInput" placeholder="Type a message here..." autocomplete="off" />
+      
+      <!-- Emoji button -->
+      <button type="button" id="emojiBtn" class="emoji-button">😀</button>
+      
       <label for="fileInput">
         <img src="File_Logo.jpg" alt="Upload" class="icon-btn">
       </label>
