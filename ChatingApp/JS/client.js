@@ -1,5 +1,5 @@
-const socket = io("");
 
+const socket = io("");
 // Name URL 
 const urlParams = new URLSearchParams(window.location.search);
 let names = urlParams.get("name");
@@ -245,9 +245,9 @@ emojiBtn.onclick = () => {
   emojiPanel.style.boxShadow = "0 5px 15px rgba(0,0,0,0.3)";
   emojiPanel.style.zIndex = "1000";
   emojiPanel.style.display = "grid";
-  emojiPanel.style.gridTemplateColumns = "repeat(7, 1fr)";
-  emojiPanel.style.gap = "8px";
-  emojiPanel.style.maxWidth = "280px";
+  emojiPanel.style.gridTemplateColumns = "repeat(6, 1fr)";
+  emojiPanel.style.gap = "5px";
+  emojiPanel.style.maxWidth = "300px";
 
   const emojis = ["😀","😂","😍","🥰","😘","😎","🔥","❤️","👍","👏","🙌","🎉","🥳","😢","😡","🙏","👀","🚀","💯","✨"];
 
@@ -486,14 +486,14 @@ socket.on("connect", () => console.log("Socket connected!"));
 socket.on("connect_error", (err) => console.error("Socket error:", err));
 
 // ==================== Chat Clear Button ====================
-// const clearBtn = document.createElement("button");
-// clearBtn.innerHTML = "🧹 Clear Chat";
-// clearBtn.className = "clear-chat-btn";
-// clearBtn.onclick = () => {
-//   if (confirm("Are you sure? This will clear all chat history permanently.")) {
-//     localStorage.removeItem(CHAT_KEY);
-//     messageContainer.innerHTML = "";
-//     append("Chat history cleared 🧹", "null", true);
-//   }
-// };
-// document.body.appendChild(clearBtn);
+const clearBtn = document.createElement("button");
+clearBtn.innerHTML = "🧹 Clear Chat";
+clearBtn.className = "clear-chat-btn";
+clearBtn.onclick = () => {
+  if (confirm("Are you sure? This will clear all chat history permanently.")) {
+    localStorage.removeItem(CHAT_KEY);
+    messageContainer.innerHTML = "";
+    append("Chat history cleared 🧹", "null", true);
+  }
+};
+document.body.appendChild(clearBtn);
